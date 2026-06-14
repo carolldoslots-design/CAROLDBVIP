@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Manual do Double VIP — Carol Neto</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F0D060;
+    --gold-dim: #8B6914;
+    /* ── NOVO ROXO FECHADO ── */
+    --purple-deep:  #06020F;
+    --purple-dark:  #090115;
+    --purple-card:  #0C0320;
+    --purple-mid:   #100428;
+    --neon-purple:  #7B00D4;
+    --neon-pink:    #D400C8;
+    --neon-white:   #DDD5FF;
+    --text-main:    #DDD5FF;
+    --text-muted:   #7A6FA0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--purple-deep);
+    color: var(--text-main);
+    overflow-x: hidden;
+  }
+
+  /* ═══════════════════════════════════
+     FLOATING CASINO CHIPS BACKGROUND
+  ═══════════════════════════════════ */
+  .bg-canvas {
+    position: fixed; inset: 0;
+    pointer-events: none; z-index: 0; overflow: hidden;
+  }
+
+  /* SVG chip element injected by JS */
+  .chip-el {
+    position: absolute;
+    opacity: 0;
+    animation: chipFloat linear infinite;
+    user-select: none;
+  }
+  @keyframes chipFloat {
+    0%   { transform: translateY(110vh) rotate(0deg)   scale(1);    opacity: 0; }
+    8%   { opacity: 0.12; }
+    50%  { transform: translateY(50vh)  rotate(180deg) scale(1.05); opacity: 0.12; }
+    92%  { opacity: 0.12; }
+    100% { transform: translateY(-12vh) rotate(360deg) scale(1);    opacity: 0; }
+  }
+
+  .page-wrapper { position: relative; z-index: 1; }
+
+  /* ═══════════════════════════════════
+     HERO
+  ═══════════════════════════════════ */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 80px 24px 60px;
+    background: radial-gradient(ellipse 80% 65% at 50% 0%, #220050 0%, var(--purple-deep) 68%);
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: ''; position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 18% 80%, rgba(123,0,212,0.22) 0%, transparent 48%),
+      radial-gradient(circle at 82% 18%, rgba(212,0,200,0.14) 0%, transparent 48%);
+  }
+
+  .badge-exclusivo {
+    display: inline-block;
+    border: 1px solid var(--gold); color: var(--gold);
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    padding: 6px 22px; border-radius: 2px; margin-bottom: 28px;
+    background: rgba(212,175,55,0.06);
+    box-shadow: 0 0 18px rgba(212,175,55,0.4), inset 0 0 8px rgba(212,175,55,0.06);
+  }
+  .hero-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.4rem, 7vw, 5.5rem);
+    font-weight: 900; color: var(--gold);
+    line-height: 1.05; letter-spacing: 0.03em;
+    text-shadow: 0 0 30px rgba(212,175,55,0.7), 0 0 80px rgba(212,175,55,0.3);
+    margin-bottom: 20px;
+  }
+  .hero-subtitle {
+    font-size: clamp(0.85rem, 2vw, 1.05rem); font-weight: 300;
+    color: var(--text-muted); letter-spacing: 0.12em;
+    text-transform: uppercase; max-width: 640px;
+    line-height: 1.8; margin-bottom: 36px;
+  }
+  .hero-divider {
+    width: 80px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 36px;
+  }
+  .hero-byline { font-size: 1rem; font-weight: 500; color: var(--neon-white); letter-spacing: 0.08em; }
+  .hero-byline strong { color: var(--gold-light); font-weight: 700; }
+
+  .scroll-down {
+    position: absolute; bottom: 32px; left: 50%;
+    transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    color: var(--text-muted); font-size: 0.65rem;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    animation: scrollBounce 2s ease-in-out infinite;
+  }
+  @keyframes scrollBounce {
+    0%,100%{ transform: translateX(-50%) translateY(0); }
+    50%    { transform: translateX(-50%) translateY(9px); }
+  }
+
+  /* ═══════════════════════════════════
+     SECTION BASE
+  ═══════════════════════════════════ */
+  .section { padding: 80px 24px; max-width: 960px; margin: 0 auto; }
+  .section-bg {
+    background: linear-gradient(135deg, var(--purple-deep) 0%, #0E0426 50%, var(--purple-deep) 100%);
+    border-top: 1px solid rgba(212,175,55,0.09);
+    border-bottom: 1px solid rgba(212,175,55,0.09);
+  }
+  .section-label {
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--neon-purple); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .section-label::after {
+    content: ''; flex: 1; height: 1px;
+    background: linear-gradient(90deg, var(--neon-purple), transparent);
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem); font-weight: 700;
+    color: var(--gold); line-height: 1.15; margin-bottom: 24px;
+  }
+  .section-text { font-size: 1rem; line-height: 1.85; color: var(--text-main); font-weight: 300; }
+  .section-text + .section-text { margin-top: 16px; }
+
+  /* ═══════════════════════════════════
+     NEON CARD — base → active states
+  ═══════════════════════════════════ */
+  .neon-card {
+    position: relative; border-radius: 10px;
+    transition:
+      box-shadow   0.55s ease,
+      border-color 0.55s ease,
+      background   0.55s ease,
+      transform    0.3s  ease,
+      opacity      0.55s ease;
+    opacity: 0;
+    transform: translateY(28px);
+  }
+  .neon-card.neon-card--active { opacity: 1; transform: translateY(0); }
+  .neon-card:hover { transform: translateY(-6px) !important; }
+
+  /* ── MULTIPLIER CARDS ── */
+  .mult-card { padding: 32px 24px; text-align: center; cursor: default; }
+
+  .mult-card-red {
+    background: linear-gradient(145deg, #140303, #0A0101);
+    border: 1px solid rgba(229,57,53,0.2);
+    box-shadow: inset 0 0 25px rgba(229,57,53,0.03);
+  }
+  .mult-card-red.neon-card--active {
+    border-color: rgba(229,57,53,0.72);
+    background: linear-gradient(145deg, #260606, #160303);
+    box-shadow:
+      0 0 38px rgba(229,57,53,0.5),
+      0 0 90px rgba(229,57,53,0.18),
+      inset 0 0 45px rgba(229,57,53,0.09),
+      inset 0 1px 0 rgba(229,57,53,0.35);
+  }
+  .mult-card-red:hover {
+    box-shadow:
+      0 0 60px rgba(229,57,53,0.7),
+      0 0 110px rgba(229,57,53,0.25),
+      inset 0 0 55px rgba(229,57,53,0.13) !important;
+  }
+
+  .mult-card-black {
+    background: linear-gradient(145deg, #040410, #02020A);
+    border: 1px solid rgba(100,100,200,0.18);
+    box-shadow: inset 0 0 25px rgba(80,80,180,0.03);
+  }
+  .mult-card-black.neon-card--active {
+    border-color: rgba(120,120,255,0.68);
+    background: linear-gradient(145deg, #0A0A28, #060618);
+    box-shadow:
+      0 0 38px rgba(100,100,220,0.48),
+      0 0 90px rgba(80,80,200,0.16),
+      inset 0 0 45px rgba(80,80,200,0.09),
+      inset 0 1px 0 rgba(120,120,200,0.35);
+  }
+  .mult-card-black:hover {
+    box-shadow:
+      0 0 60px rgba(120,120,255,0.66),
+      0 0 110px rgba(80,80,220,0.22),
+      inset 0 0 55px rgba(80,80,200,0.12) !important;
+  }
+
+  .mult-card-white {
+    background: linear-gradient(145deg, #120901, #0A0501);
+    border: 1px solid rgba(212,175,55,0.22);
+    box-shadow: inset 0 0 25px rgba(212,175,55,0.03);
+  }
+  .mult-card-white.neon-card--active {
+    border-color: rgba(212,175,55,0.88);
+    background: linear-gradient(145deg, #211202, #150B01);
+    box-shadow:
+      0 0 45px rgba(212,175,55,0.6),
+      0 0 100px rgba(212,175,55,0.22),
+      inset 0 0 55px rgba(212,175,55,0.11),
+      inset 0 1px 0 rgba(212,175,55,0.45);
+  }
+  .mult-card-white:hover {
+    box-shadow:
+      0 0 70px rgba(212,175,55,0.8),
+      0 0 130px rgba(212,175,55,0.3),
+      inset 0 0 65px rgba(212,175,55,0.15) !important;
+  }
+
+  /* ── PATTERN CARDS ── */
+  .pattern-card { padding: 28px 24px; cursor: default; background: #080216; }
+
+  /* Surf – red */
+  .pattern-card:nth-child(1) { border: 1px solid rgba(229,57,53,0.12); box-shadow: inset 0 0 18px rgba(229,57,53,0.02); }
+  .pattern-card:nth-child(1).neon-card--active {
+    border-color: rgba(229,57,53,0.68);
+    background: linear-gradient(145deg, #180404, #0C0208);
+    box-shadow: 0 0 32px rgba(229,57,53,0.45), 0 0 75px rgba(229,57,53,0.14), inset 0 0 38px rgba(229,57,53,0.07);
+  }
+  .pattern-card:nth-child(1):hover { box-shadow: 0 0 55px rgba(229,57,53,0.65), 0 0 100px rgba(229,57,53,0.2), inset 0 0 50px rgba(229,57,53,0.1) !important; }
+
+  /* Xadrez – teal/cyan neon */
+  .pattern-card:nth-child(2) { border: 1px solid rgba(0,200,200,0.12); box-shadow: inset 0 0 18px rgba(0,200,200,0.02); }
+  .pattern-card:nth-child(2).neon-card--active {
+    border-color: rgba(0,220,220,0.65);
+    background: linear-gradient(145deg, #021818, #010E0E);
+    box-shadow: 0 0 32px rgba(0,210,210,0.42), 0 0 75px rgba(0,180,180,0.14), inset 0 0 38px rgba(0,200,200,0.07);
+  }
+  .pattern-card:nth-child(2):hover { box-shadow: 0 0 55px rgba(0,230,230,0.6), 0 0 100px rgba(0,200,200,0.2), inset 0 0 50px rgba(0,220,220,0.1) !important; }
+
+  /* Casadinha – pink */
+  .pattern-card:nth-child(3) { border: 1px solid rgba(212,0,200,0.12); box-shadow: inset 0 0 18px rgba(212,0,200,0.02); }
+  .pattern-card:nth-child(3).neon-card--active {
+    border-color: rgba(220,0,210,0.65);
+    background: linear-gradient(145deg, #1A0225, #0F0118);
+    box-shadow: 0 0 32px rgba(212,0,200,0.42), 0 0 75px rgba(180,0,170,0.14), inset 0 0 38px rgba(212,0,200,0.07);
+  }
+  .pattern-card:nth-child(3):hover { box-shadow: 0 0 55px rgba(230,0,220,0.6), 0 0 100px rgba(200,0,190,0.2), inset 0 0 50px rgba(212,0,200,0.1) !important; }
+
+  /* Branco – gold */
+  .pattern-card:nth-child(4) { border: 1px solid rgba(212,175,55,0.12); box-shadow: inset 0 0 18px rgba(212,175,55,0.02); }
+  .pattern-card:nth-child(4).neon-card--active {
+    border-color: rgba(212,175,55,0.8);
+    background: linear-gradient(145deg, #1C1002, #110900);
+    box-shadow: 0 0 38px rgba(212,175,55,0.52), 0 0 85px rgba(212,175,55,0.18), inset 0 0 42px rgba(212,175,55,0.09);
+  }
+  .pattern-card:nth-child(4):hover { box-shadow: 0 0 62px rgba(212,175,55,0.72), 0 0 115px rgba(212,175,55,0.24), inset 0 0 55px rgba(212,175,55,0.12) !important; }
+
+  /* ── INFO CARDS (Cap 1) ── */
+  .info-card { padding: 28px; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); background: rgba(255,255,255,0.015); }
+  .info-card--purple.neon-card--active {
+    border-color: rgba(123,0,212,0.68);
+    background: linear-gradient(145deg, #130630, #0A0320);
+    box-shadow: 0 0 28px rgba(123,0,212,0.45), 0 0 65px rgba(100,0,180,0.13), inset 0 0 30px rgba(100,0,180,0.08);
+  }
+  .info-card--pink.neon-card--active {
+    border-color: rgba(212,0,200,0.62);
+    background: linear-gradient(145deg, #1A0228, #0F0118);
+    box-shadow: 0 0 28px rgba(212,0,200,0.4), 0 0 65px rgba(180,0,170,0.12), inset 0 0 30px rgba(180,0,170,0.07);
+  }
+  .info-card--gold.neon-card--active {
+    border-color: rgba(212,175,55,0.68);
+    background: linear-gradient(145deg, #1C1002, #110900);
+    box-shadow: 0 0 28px rgba(212,175,55,0.45), 0 0 65px rgba(212,175,55,0.14), inset 0 0 30px rgba(212,175,55,0.08);
+  }
+  .info-card--purple:hover, .info-card--pink:hover, .info-card--gold:hover { transform: translateY(-5px) !important; }
+
+  /* ── GESTÃO ITEMS ── */
+  .gestao-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding: 22px 26px;
+    border: 1px solid rgba(212,175,55,0.08);
+    background: rgba(212,175,55,0.015);
+  }
+  .gestao-item.neon-card--active {
+    border-color: rgba(212,175,55,0.55);
+    background: linear-gradient(135deg, rgba(212,175,55,0.08), rgba(212,175,55,0.02));
+    box-shadow: 0 0 24px rgba(212,175,55,0.32), 0 0 58px rgba(212,175,55,0.1), inset 0 0 22px rgba(212,175,55,0.06);
+  }
+  .gestao-item:hover {
+    border-color: rgba(212,175,55,0.78) !important;
+    box-shadow: 0 0 40px rgba(212,175,55,0.48), 0 0 80px rgba(212,175,55,0.15), inset 0 0 32px rgba(212,175,55,0.09) !important;
+  }
+
+  /* ── BETOU BLOCK ── */
+  .betou-highlight {
+    display: flex; align-items: center; gap: 20px;
+    margin-top: 32px; padding: 28px 32px;
+    border: 1px solid rgba(123,0,212,0.12);
+    border-radius: 10px; background: rgba(123,0,212,0.02);
+  }
+  .betou-highlight.neon-card--active {
+    border-color: rgba(123,0,212,0.72);
+    background: linear-gradient(135deg, rgba(123,0,212,0.11), rgba(212,0,200,0.06));
+    box-shadow: 0 0 32px rgba(123,0,212,0.44), 0 0 72px rgba(100,0,180,0.13), inset 0 0 30px rgba(100,0,180,0.08);
+  }
+
+  /* ── ALERT RAINHA ── */
+  .alert-rainha {
+    margin-top: 36px; padding: 28px 32px;
+    border: 1px solid rgba(212,175,55,0.18);
+    border-radius: 10px; text-align: center;
+    background: rgba(212,175,55,0.02);
+  }
+  .alert-rainha.neon-card--active {
+    border-color: rgba(212,175,55,0.75);
+    background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03));
+    box-shadow: 0 0 38px rgba(212,175,55,0.5), 0 0 85px rgba(212,175,55,0.15), inset 0 0 42px rgba(212,175,55,0.08);
+  }
+
+  /* ── TURMA CARDS ── */
+  .turma-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 28px; margin-top: 40px;
+  }
+
+  .turma-card {
+    padding: 34px 30px; border-radius: 12px; cursor: default;
+    background: #070115;
+  }
+
+  /* Turma Black */
+  .turma-black {
+    border: 1px solid rgba(123,0,212,0.18);
+    box-shadow: inset 0 0 30px rgba(100,0,180,0.03);
+  }
+  .turma-black.neon-card--active {
+    border-color: rgba(123,0,212,0.75);
+    background: linear-gradient(145deg, #120530, #080220);
+    box-shadow:
+      0 0 42px rgba(123,0,212,0.5),
+      0 0 95px rgba(100,0,180,0.18),
+      inset 0 0 50px rgba(100,0,180,0.1),
+      inset 0 1px 0 rgba(160,80,255,0.3);
+  }
+  .turma-black:hover {
+    box-shadow:
+      0 0 65px rgba(123,0,212,0.7),
+      0 0 120px rgba(100,0,180,0.25),
+      inset 0 0 65px rgba(100,0,180,0.14) !important;
+  }
+
+  /* Turma Black 2.0 */
+  .turma-black2 {
+    border: 1px solid rgba(212,175,55,0.18);
+    box-shadow: inset 0 0 30px rgba(212,175,55,0.03);
+  }
+  .turma-black2.neon-card--active {
+    border-color: rgba(212,175,55,0.82);
+    background: linear-gradient(145deg, #1E1202, #120800);
+    box-shadow:
+      0 0 48px rgba(212,175,55,0.58),
+      0 0 105px rgba(212,175,55,0.2),
+      inset 0 0 55px rgba(212,175,55,0.12),
+      inset 0 1px 0 rgba(240,208,96,0.35);
+  }
+  .turma-black2:hover {
+    box-shadow:
+      0 0 72px rgba(212,175,55,0.78),
+      0 0 135px rgba(212,175,55,0.28),
+      inset 0 0 70px rgba(212,175,55,0.16) !important;
+  }
+
+  .turma-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 14px; border-radius: 20px;
+    font-size: 0.65rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    margin-bottom: 20px;
+  }
+  .badge-purple {
+    background: rgba(123,0,212,0.18); color: #C080FF;
+    border: 1px solid rgba(123,0,212,0.4);
+    box-shadow: 0 0 10px rgba(123,0,212,0.25);
+  }
+  .badge-gold {
+    background: rgba(212,175,55,0.14); color: var(--gold-light);
+    border: 1px solid rgba(212,175,55,0.4);
+    box-shadow: 0 0 10px rgba(212,175,55,0.25);
+  }
+
+  .turma-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem; font-weight: 900;
+    line-height: 1.15; margin-bottom: 8px;
+  }
+  .turma-title-purple { color: #C080FF; text-shadow: 0 0 20px rgba(160,80,255,0.5); }
+  .turma-title-gold   { color: var(--gold); text-shadow: 0 0 20px rgba(212,175,55,0.5); }
+
+  .turma-sub {
+    font-size: 0.72rem; font-weight: 500;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 24px;
+  }
+
+  .turma-divider {
+    width: 100%; height: 1px; margin-bottom: 22px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
+  }
+
+  .turma-list { display: flex; flex-direction: column; gap: 11px; }
+
+  .turma-item {
+    display: flex; align-items: flex-start; gap: 12px;
+    font-size: 0.87rem; color: var(--text-main); line-height: 1.55; font-weight: 400;
+  }
+  .turma-item .ti-icon {
+    flex-shrink: 0; width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 800; margin-top: 1px;
+  }
+  .ti-purple { background: rgba(123,0,212,0.25); color: #C080FF; border: 1px solid rgba(160,80,255,0.35); }
+  .ti-gold   { background: rgba(212,175,55,0.2);  color: var(--gold-light); border: 1px solid rgba(212,175,55,0.4); }
+
+  .upgrade-banner {
+    margin-top: 22px; padding: 14px 18px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.04));
+    border: 1px solid rgba(212,175,55,0.3);
+    border-radius: 8px;
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--gold-light);
+    box-shadow: 0 0 16px rgba(212,175,55,0.15);
+  }
+
+  /* ── QUOTE ── */
+  .quote-frase {
+    margin-top: 40px; padding: 44px 36px; text-align: center;
+    border-top: 2px solid rgba(212,175,55,0.25);
+    border-bottom: 2px solid rgba(212,175,55,0.25);
+    background: rgba(212,175,55,0.015);
+    position: relative; overflow: hidden;
+  }
+  .quote-frase.neon-card--active {
+    border-top-color: var(--gold); border-bottom-color: var(--gold);
+    background: linear-gradient(135deg, #110830, #06020F);
+    box-shadow: 0 0 42px rgba(212,175,55,0.32), inset 0 0 50px rgba(212,175,55,0.07);
+  }
+  .quote-frase::before {
+    content: '"'; position: absolute; top: -20px; left: 20px;
+    font-family: 'Playfair Display', serif; font-size: 12rem;
+    color: rgba(212,175,55,0.04); line-height: 1;
+  }
+  .quote-text {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.5rem, 4vw, 2.4rem); font-weight: 700;
+    color: var(--gold); letter-spacing: 0.04em;
+    text-shadow: 0 0 30px rgba(212,175,55,0.45);
+    position: relative; z-index: 1;
+  }
+
+  /* ── DOTS / CIRCLES ── */
+  .mult-dot {
+    width: 52px; height: 52px; border-radius: 50%;
+    margin: 0 auto 18px;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.7rem; letter-spacing: 0.05em;
+  }
+  .dot-red   { background: #E53935; color: #fff; box-shadow: 0 0 22px rgba(229,57,53,0.75); }
+  .dot-black { background: #101030; color: #aaa; border: 2px solid #5555AA; box-shadow: 0 0 22px rgba(80,80,200,0.55); }
+  .dot-white { background: var(--gold); color: #000; box-shadow: 0 0 26px rgba(212,175,55,0.85); }
+
+  .mult-label  { font-size:0.7rem; font-weight:700; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:10px; color:var(--text-muted); }
+  .mult-number { font-family:'Playfair Display',serif; font-size:2.8rem; font-weight:900; line-height:1; margin-bottom:8px; }
+  .num-red   { color:#E53935; text-shadow:0 0 18px rgba(229,57,53,0.65); }
+  .num-black { color:#9999EE; text-shadow:0 0 18px rgba(120,120,230,0.55); }
+  .num-gold  { color:var(--gold); text-shadow:0 0 18px rgba(212,175,55,0.65); }
+  .mult-desc { font-size:0.75rem; color:var(--text-muted); line-height:1.6; }
+
+  .mult-note {
+    margin-top:32px; padding:20px 24px;
+    background:rgba(212,175,55,0.04);
+    border-left:3px solid var(--gold);
+    border-radius:0 6px 6px 0;
+    font-size:0.9rem; color:var(--text-muted); line-height:1.7;
+  }
+  .mult-note strong { color:var(--gold-light); }
+
+  /* ── GRIDS ── */
+  .multiplier-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:20px; margin-top:40px; }
+  .patterns-grid   { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:24px; margin-top:40px; }
+  .gestao-list     { margin-top:32px; display:flex; flex-direction:column; gap:16px; }
+  .info-grid       { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:20px; margin-top:36px; }
+
+  /* ── PATTERN INNER ── */
+  .pattern-number   { font-size:0.65rem; font-weight:700; letter-spacing:0.3em; text-transform:uppercase; color:var(--text-muted); margin-bottom:14px; }
+  .pattern-title    { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; margin-bottom:8px; }
+  .pt-red    { color:#FF6B6B; }
+  .pt-teal   { color:#00DEDE; }
+  .pt-pink   { color:#FF50F0; }
+  .pt-gold   { color:var(--gold-light); }
+  .pattern-subtitle { font-size:0.7rem; font-weight:600; letter-spacing:0.1em; color:var(--text-muted); text-transform:uppercase; margin-bottom:14px; }
+  .pattern-desc     { font-size:0.88rem; line-height:1.75; color:var(--text-main); font-weight:300; }
+
+  .circles-row { display:flex; gap:8px; margin:16px 0; flex-wrap:wrap; }
+  .c-dot {
+    width:30px; height:30px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.6rem; font-weight:700;
+  }
+  .c-red       { background:#E53935; box-shadow:0 0 12px rgba(229,57,53,0.75); color:#fff; }
+  .c-black     { background:#0F0F30; border:1.5px solid #6666CC; box-shadow:0 0 12px rgba(80,80,210,0.55); color:#bbb; }
+  .c-white-dot { background:var(--gold); box-shadow:0 0 14px rgba(212,175,55,0.85); color:#000; }
+  .c-pulse     { animation:dotPulse 1.2s ease-in-out infinite; }
+  @keyframes dotPulse { 0%,100%{transform:scale(1)} 50%{transform:scale(1.2)} }
+
+  /* Xadrez checker visual */
+  .checker-row { display:flex; gap:6px; margin:10px 0; flex-wrap:wrap; align-items:center; }
+  .checker-row + .checker-row { margin-top: 0; }
+  .ck-cell {
+    width:28px; height:28px; border-radius:4px;
+    display:flex; align-items:center; justify-content:center;
+    font-size:0.58rem; font-weight:700;
+  }
+  .ck-r { background:#E53935; color:#fff; box-shadow:0 0 8px rgba(229,57,53,0.6); }
+  .ck-b { background:#0F0F30; border:1px solid #6666CC; color:#bbb; box-shadow:0 0 8px rgba(80,80,200,0.5); }
+
+  /* ── GESTÃO INNER ── */
+  .gestao-num {
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(212,175,55,0.1); border:1px solid rgba(212,175,55,0.42);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Playfair Display',serif; font-size:1rem; color:var(--gold); flex-shrink:0;
+  }
+  .gestao-item h4 { font-size:0.95rem; font-weight:600; color:var(--neon-white); margin-bottom:6px; }
+  .gestao-item p  { font-size:0.85rem; color:var(--text-muted); line-height:1.7; }
+
+  /* ── BETOU INNER ── */
+  .betou-icon { font-size:2.5rem; flex-shrink:0; }
+  .betou-text h3 { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--neon-white); margin-bottom:6px; }
+  .betou-text p  { font-size:0.88rem; color:var(--text-muted); line-height:1.7; }
+  .alert-icon  { font-size:2rem; margin-bottom:12px; }
+  .alert-title { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--gold); font-weight:700; letter-spacing:0.05em; margin-bottom:10px; }
+  .alert-text  { font-size:0.9rem; color:var(--text-muted); line-height:1.7; }
+
+  /* ── TABLE ── */
+  .compare-table { width:100%; margin-top:36px; border-collapse:collapse; border-radius:10px; overflow:hidden; }
+  .compare-table th { padding:16px 20px; text-align:left; font-size:0.7rem; font-weight:700; letter-spacing:0.15em; text-transform:uppercase; background:rgba(212,175,55,0.08); color:var(--gold); border-bottom:1px solid rgba(212,175,55,0.18); }
+  .compare-table td { padding:16px 20px; font-size:0.88rem; color:var(--text-main); line-height:1.6; border-bottom:1px solid rgba(255,255,255,0.04); }
+  .compare-table tr:last-child td { border-bottom:none; }
+  .compare-table tr:nth-child(odd)  td { background:rgba(255,255,255,0.015); }
+  .compare-table tr:nth-child(even) td { background:rgba(123,0,212,0.04); }
+  .tag-geral { display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:rgba(255,255,255,0.07); color:var(--text-muted); }
+  .tag-vip   { display:inline-block; padding:3px 10px; border-radius:20px; font-size:0.65rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; background:rgba(212,175,55,0.14); color:var(--gold); border:1px solid rgba(212,175,55,0.32); }
+
+  /* ── ORNAMENT ── */
+  .ornament { display:flex; align-items:center; gap:16px; max-width:960px; margin:0 auto; padding:0 24px; }
+  .ornament-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(212,175,55,0.18),transparent); }
+  .ornament-diamond { width:6px; height:6px; background:var(--gold); transform:rotate(45deg); box-shadow:0 0 8px var(--gold); flex-shrink:0; }
+
+  /* ── FOOTER ── */
+  footer { background:linear-gradient(180deg,var(--purple-deep) 0%,#030008 100%); border-top:1px solid rgba(212,175,55,0.12); padding:60px 24px; text-align:center; }
+  .footer-sig  { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--text-muted); letter-spacing:0.08em; margin-bottom:8px; }
+  .footer-sig strong { color:var(--gold); }
+  .footer-sub  { font-size:0.7rem; color:rgba(122,111,160,0.5); letter-spacing:0.15em; text-transform:uppercase; margin-bottom:48px; }
+
+  /* ── CTA BUTTONS ── */
+  .cta-group { display:flex; flex-wrap:wrap; gap:16px; justify-content:center; margin-bottom:48px; }
+  .cta-btn {
+    display:inline-flex; align-items:center; gap:10px;
+    padding:16px 32px; border-radius:6px;
+    font-family:'Montserrat',sans-serif; font-size:0.85rem;
+    font-weight:700; letter-spacing:0.08em; text-transform:uppercase;
+    text-decoration:none; cursor:pointer;
+    transition:transform 0.2s, box-shadow 0.2s; border:none;
+  }
+  .cta-insta { background:linear-gradient(135deg,#6A0DAD,#C13584,#F56040); color:#fff; box-shadow:0 4px 24px rgba(106,13,173,0.45); }
+  .cta-insta:hover { transform:translateY(-3px); box-shadow:0 8px 40px rgba(106,13,173,0.6); }
+  .cta-betou { background:linear-gradient(135deg,var(--gold-dim),var(--gold),var(--gold-light)); color:#06020F; box-shadow:0 4px 24px rgba(212,175,55,0.4); animation:pulseCTA 2.5s ease-in-out infinite; }
+  .cta-betou:hover { transform:translateY(-3px); box-shadow:0 8px 45px rgba(212,175,55,0.65); animation:none; }
+  @keyframes pulseCTA { 0%,100%{box-shadow:0 4px 24px rgba(212,175,55,0.4)} 50%{box-shadow:0 4px 46px rgba(212,175,55,0.72)} }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width:640px){
+    .betou-highlight{flex-direction:column;text-align:center;}
+    .gestao-item{flex-direction:column;align-items:center;text-align:center;}
+    .compare-table th,.compare-table td{padding:10px 12px;font-size:0.78rem;}
+    .turma-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<!-- BACKGROUND CANVAS — chips injected by JS -->
+<div class="bg-canvas" id="bgCanvas"></div>
+
+<div class="page-wrapper">
+
+  <!-- ════════ HERO ════════ -->
+  <header class="hero">
+    <div class="badge-exclusivo">✦ Edição Exclusiva ✦</div>
+    <h1 class="hero-title">O MANUAL DO<br>DOUBLE VIP</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-subtitle">Estratégia, Padrões Algorítmicos e Inteligência de Mercado Aplicada</p>
+    <p class="hero-byline">Por <strong>Carol Neto</strong> — A Rainha do Surf no Double VIP</p>
+    <div class="scroll-down">
+      <svg width="16" height="10" viewBox="0 0 16 10" fill="none">
+        <path d="M1 1L8 8L15 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+    </div>
+  </header>
+
+  <!-- ════════ SEÇÃO 1: MERCADO ════════ -->
+  <section class="section">
+    <div class="section-label">Seção 1</div>
+    <h2 class="section-title">O Mercado Double VIP</h2>
+    <p class="section-text">O Double VIP é uma das estruturas de mercado mais elegantes e diretas disponíveis: uma roleta simplificada operando com <strong style="color:var(--neon-white)">três cores</strong> e multiplicadores fixos, sem ruídos e sem variáveis desnecessárias. Quem aprende a ler o comportamento do seu motor opera com vantagem assimétrica.</p>
+    <p class="section-text">Cada rodada resolve em uma das três cores abaixo. Entender o peso estatístico de cada uma é o primeiro passo para deixar de reagir ao acaso e começar a operar com método.</p>
+
+    <div class="multiplier-grid">
+      <div class="neon-card mult-card mult-card-red">
+        <div class="mult-dot dot-red">V</div>
+        <div class="mult-label">Vermelho</div>
+        <div class="mult-number num-red">2×</div>
+        <div class="mult-desc">Retorna o dobro do valor investido. Alta frequência — base da constância operacional.</div>
+      </div>
+      <div class="neon-card mult-card mult-card-black">
+        <div class="mult-dot dot-black">P</div>
+        <div class="mult-label">Preto</div>
+        <div class="mult-number num-black">2×</div>
+        <div class="mult-desc">Retorna o dobro do valor investido. Simetria quase perfeita com o Vermelho — eixo do equilíbrio algorítmico.</div>
+      </div>
+      <div class="neon-card mult-card mult-card-white">
+        <div class="mult-dot dot-white c-pulse">B</div>
+        <div class="mult-label">Branco</div>
+        <div class="mult-number num-gold">14×</div>
+        <div class="mult-desc">O evento de elite do mercado. Multiplicador máximo que redefine bancas inteiras em uma única operação.</div>
+      </div>
+    </div>
+
+    <div class="mult-note">
+      <strong>Nota estratégica:</strong> Enquanto Vermelho e Preto garantem constância operacional e proteção de banca, o Branco é o evento máximo do ciclo algorítmico. A diferença entre amadores e operadores de elite está em <strong>dominar os gatilhos que precedem o Branco</strong> — não em persegui-lo aleatoriamente.
+    </div>
+  </section>
+
+  <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+
+  <!-- ════════ SEÇÃO 2: INTRO ════════ -->
+  <section class="section section-bg" style="max-width:100%;padding:80px 0;">
+    <div style="max-width:960px;margin:0 auto;padding:0 24px;">
+      <div class="section-label">Introdução</div>
+      <h2 class="section-title">Desmistificando o Gráfico</h2>
+      <p class="section-text">A virada mais importante que você vai fazer não é técnica — é mental. A maioria das pessoas entra no Double VIP como apostadores: agindo por intuição, esperando que a sorte sorria. Esses operadores perdem de forma sistemática não porque tenham azar, mas porque estão jogando um jogo diferente do que pensam estar jogando.</p>
+      <p class="section-text">O que você está aprendendo neste manual é a postura de um <strong style="color:var(--gold-light)">operador de mercado</strong> — alguém que lê o gráfico como uma sequência lógica de eventos gerados por código, identifica padrões recorrentes e executa operações baseadas em sinais concretos, não em esperança.</p>
+      <p class="section-text">O motor do Double VIP não é aleatório no sentido caótico da palavra. Ele é programado sob regras de engenharia de software — com modelos matemáticos, distribuições estatísticas e janelas de comportamento pré-definidas.</p>
+    </div>
+  </section>
+
+  <!-- ════════ SEÇÃO 3: CAP 1 ════════ -->
+  <section class="section">
+    <div class="section-label">Capítulo 1</div>
+    <h2 class="section-title">A Ciência dos Ciclos e da Programação</h2>
+    <p class="section-text">Todo ambiente de Double VIP opera sobre um <strong style="color:var(--neon-white)">motor algorítmico</strong> — um sistema programado que gera resultados sob regras lógicas precisas. Entender isso é a fundação de tudo.</p>
+
+    <div class="info-grid">
+      <div class="neon-card info-card info-card--purple">
+        <div style="font-size:1.8rem;margin-bottom:14px;">⚙️</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--neon-white);margin-bottom:10px;">O Motor Algorítmico</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted);line-height:1.75;">O software foi construído com janelas de comportamento definidas por engenheiros. Cada sequência de resultados obedece a lógicas de distribuição que se manifestam em padrões visíveis para quem sabe observar.</p>
+      </div>
+      <div class="neon-card info-card info-card--pink">
+        <div style="font-size:1.8rem;margin-bottom:14px;">🔄</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--neon-white);margin-bottom:10px;">Os Ciclos Repetitivos</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted);line-height:1.75;">Algoritmos operam em loops. À medida que o volume de rodadas cresce, o sistema reajusta distribuições para equilibrar estatísticas — gerando sequências previsíveis que se repetem em padrões cíclicos identificáveis.</p>
+      </div>
+      <div class="neon-card info-card info-card--gold">
+        <div style="font-size:1.8rem;margin-bottom:14px;">📊</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--neon-white);margin-bottom:10px;">A Leitura de Padrões</h3>
+        <p style="font-size:0.87rem;color:var(--text-muted);line-height:1.75;">O operador treinado não tenta prever o resultado de uma rodada isolada. Ele lê o padrão em curso, confirma o comportamento e entra no fluxo já estabelecido pelo algoritmo.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+
+  <!-- ════════ SEÇÃO 4: CAP 2 — PADRÕES ════════ -->
+  <section class="section section-bg" style="max-width:100%;padding:80px 0;">
+    <div style="max-width:960px;margin:0 auto;padding:0 24px;">
+      <div class="section-label">Capítulo 2</div>
+      <h2 class="section-title">O Mapa dos Padrões de Ouro</h2>
+      <p class="section-text">Estes são os quatro padrões mestres que todo operador precisa ter mapeados. Cada um representa um estado comportamental do algoritmo — com suas próprias regras de entrada, confirmação e saída.</p>
+
+      <div class="patterns-grid">
+
+        <!-- SURF -->
+        <div class="neon-card pattern-card">
+          <div class="pattern-number">Padrão 01</div>
+          <div class="pattern-title pt-red">O "SURF"</div>
+          <div class="pattern-subtitle">Sequência Longa — A Assinatura da Rainha</div>
+          <div class="circles-row">
+            <div class="c-dot c-red">V</div><div class="c-dot c-red">V</div>
+            <div class="c-dot c-red">V</div><div class="c-dot c-red">V</div>
+            <div class="c-dot c-red c-pulse">V</div>
+          </div>
+          <p class="pattern-desc">Quando uma única cor assume dominância por várias rodadas seguidas, o algoritmo está surfando uma onda de distribuição. A regra de ouro: <strong style="color:#FF8A80;">nunca tente adivinhar a quebra — siga o fluxo da tendência enquanto ela durar.</strong></p>
+        </div>
+
+        <!-- XADREZ -->
+        <div class="neon-card pattern-card">
+          <div class="pattern-number">Padrão 02</div>
+          <div class="pattern-title pt-teal">O "XADREZ"</div>
+          <div class="pattern-subtitle">Grade Alternada — Blocos Simétricos</div>
+          <!-- Visualização xadrez: grade 2×4 alternando vermelho/preto -->
+          <div style="margin:14px 0;">
+            <div class="checker-row">
+              <div class="ck-cell ck-r">V</div><div class="ck-cell ck-b">P</div>
+              <div class="ck-cell ck-r">V</div><div class="ck-cell ck-b">P</div>
+            </div>
+            <div class="checker-row" style="margin-top:6px;">
+              <div class="ck-cell ck-b">P</div><div class="ck-cell ck-r">V</div>
+              <div class="ck-cell ck-b">P</div><div class="ck-cell ck-r c-pulse">V</div>
+            </div>
+          </div>
+          <p class="pattern-desc">O gráfico forma uma grade de blocos alternados: vermelho e preto se revezam em posições invertidas, criando um padrão visual de xadrez. Confirmado após <strong style="color:#00DEDE;">duas linhas completas</strong> de alternância. A entrada se dá no cruzamento confirmado do bloco seguinte.</p>
+        </div>
+
+        <!-- CASADINHA -->
+        <div class="neon-card pattern-card">
+          <div class="pattern-number">Padrão 03</div>
+          <div class="pattern-title pt-pink">DUPLAS FREQUENTES</div>
+          <div class="pattern-subtitle">"Casadinha" — Pares Simétricos</div>
+          <div class="circles-row">
+            <div class="c-dot c-black">P</div><div class="c-dot c-black">P</div>
+            <div class="c-dot c-red">V</div><div class="c-dot c-red">V</div>
+            <div class="c-dot c-black c-pulse">P</div>
+          </div>
+          <p class="pattern-desc">As cores andam em pares exatos: dois Pretos seguidos de dois Vermelhos. O algoritmo está em modo de equilíbrio de distribuição. Operar <strong style="color:#FF50F0;">dentro do par confirmado</strong> é o ponto de entrada estratégico.</p>
+        </div>
+
+        <!-- BRANCO -->
+        <div class="neon-card pattern-card">
+          <div class="pattern-number">Padrão 04</div>
+          <div class="pattern-title pt-gold">QUEBRA COM O BRANCO</div>
+          <div class="pattern-subtitle">O Evento 14× — Gatilhos de Ativação</div>
+          <div class="circles-row">
+            <div class="c-dot c-red">V</div><div class="c-dot c-red">V</div>
+            <div class="c-dot c-white-dot c-pulse">B</div>
+            <div class="c-dot c-red">V</div><div class="c-dot c-red">V</div>
+          </div>
+          <p class="pattern-desc">O Branco (14×) tem dois gatilhos: <strong style="color:var(--gold-light);">①</strong> Após uma Sequência Longa (fim de Surf — o algoritmo "reseta" com o Branco) e <strong style="color:var(--gold-light);">②</strong> Padrão Sanduíche — Branco isolado entre duas ocorrências da mesma cor.</p>
+        </div>
+
+      </div>
+
+      <div class="neon-card alert-rainha">
+        <div class="alert-icon">👑</div>
+        <div class="alert-title">Regra Obrigatória da Rainha</div>
+        <div class="alert-text">Jamais ignore a proteção no Branco durante as rodadas de análise forte. A blindagem de banca nas janelas de maior volatilidade não é opcional — é o que separa operadores que crescem dos que zeram. <strong style="color:var(--gold);">Proteger é também uma operação.</strong></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════ SEÇÃO 5: CAP 3 — RTP ════════ -->
+  <section class="section">
+    <div class="section-label">Capítulo 3</div>
+    <h2 class="section-title">O Fator RTP e a Transparência da Betou</h2>
+    <p class="section-text">O <strong style="color:var(--neon-white)">RTP (Return to Player)</strong> é a métrica que mede, em tempo real, qual percentual dos valores apostados está retornando aos jogadores. Não é um número fixo — flutua a cada minuto conforme o volume de operações e o comportamento do algoritmo.</p>
+    <p class="section-text">Quando o RTP está alto, o algoritmo está em fase de distribuição ativa. Quando está baixo, está em fase de recolhimento. Saber <em>quando</em> operar é tão importante quanto saber <em>como</em> operar.</p>
+
+    <div class="neon-card betou-highlight">
+      <div class="betou-icon">🏆</div>
+      <div class="betou-text">
+        <h3>Betou — Transparência Total de Dados</h3>
+        <p>A Betou é a única plataforma que oferece visibilidade completa do RTP em tempo real, permitindo identificar o momento exato em que o ecossistema está favorável para operar. Essa informação transforma análise em vantagem operacional concreta.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="ornament"><div class="ornament-line"></div><div class="ornament-diamond"></div><div class="ornament-line"></div></div>
+
+  <!-- ════════ SEÇÃO 6: CAP 4 — MINUTAGEM ════════ -->
+  <section class="section section-bg" style="max-width:100%;padding:80px 0;">
+    <div style="max-width:960px;margin:0 auto;padding:0 24px;">
+      <div class="section-label">Capítulo 4</div>
+      <h2 class="section-title">Padrões de Minutagem — O Próximo Nível</h2>
+      <p class="section-text">Além dos padrões visuais no gráfico, existe uma camada de análise que poucos dominam: a <strong style="color:var(--gold-light)">minutagem cronometrada</strong>. Os softwares de Double VIP operam acoplados a servidores de tempo — com janelas específicas dentro de cada hora onde o algoritmo libera picos de prêmios e ativa a saída do Branco com maior frequência.</p>
+      <p class="section-text">Identificar e mapear essas janelas é o diferencial dos operadores de elite. Não se trata de superstição — trata-se de engenharia de software aplicada à leitura de ciclos temporais.</p>
+
+      <!-- ── TURMA CARDS ── -->
+      <div class="turma-grid">
+
+        <!-- TURMA BLACK -->
+        <div class="neon-card turma-card turma-black">
+          <div class="turma-badge badge-purple">♠ Turma Black</div>
+          <div class="turma-title turma-title-purple">Turma Black</div>
+          <div class="turma-sub">Operações de Precisão no Double VIP</div>
+          <div class="turma-divider"></div>
+          <div class="turma-list">
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Lista de Sinais com Foco no Branco</strong> — sinais direcionados e com análise de gatilho para o evento 14×</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Lista de Sinais Extensa</strong> — cobertura completa dos padrões diários com entradas mapeadas</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Live em Busca do Branco</strong> — 3× por semana, operações ao vivo com leitura de padrão em tempo real</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Alavancagem Semanal</strong> — estratégias de escalonamento de banca com foco em resultado consistente</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Comunidade Exclusiva</strong> — acesso à comunidade fechada de operadores da Carol</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-purple">✦</span>
+              <span><strong style="color:var(--neon-white)">Padrões do Double</strong> — biblioteca de padrões identificados e documentados pela Rainha</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TURMA BLACK 2.0 -->
+        <div class="neon-card turma-card turma-black2">
+          <div class="turma-badge badge-gold">♛ Turma Black 2.0</div>
+          <div class="turma-title turma-title-gold">Turma Black 2.0</div>
+          <div class="turma-sub">Elite Upgrade — Tudo da Black + Exclusivos</div>
+          <div class="turma-divider"></div>
+          <div class="upgrade-banner">
+            <span style="font-size:1.1rem;">➡️</span>
+            <span>Tudo da Turma Black <span style="color:var(--gold)">+</span> um UPGRADE exclusivo</span>
+          </div>
+          <div class="turma-list" style="margin-top:18px;">
+            <div class="turma-item">
+              <span class="ti-icon ti-gold">★</span>
+              <span><strong style="color:var(--gold-light)">APP Exclusivo de Análise</strong> — versão paga do app de análise de gráfico e sinais desenvolvido pela Carol</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-gold">★</span>
+              <span><strong style="color:var(--gold-light)">Live Diária</strong> — de segunda a sábado, operações ao vivo com análise aprofundada em tempo real</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-gold">★</span>
+              <span><strong style="color:var(--gold-light)">Padrões de Cores e de Brancos</strong> — aulas gravadas com mapeamento completo e detalhado dos padrões</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-gold">★</span>
+              <span><strong style="color:var(--gold-light)">Comunidade Black 2.0</strong> — comunidade exclusiva de membros avançados com acesso prioritário</span>
+            </div>
+            <div class="turma-item">
+              <span class="ti-icon ti-gold">★</span>
+              <span><strong style="color:var(--gold-light)">Alavancagem &amp; Minutagem Avançada</strong> — mapeamento de janelas de tempo e estratégias de nível elite</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /turma-grid -->
+    </div>
+  </section>
+
+  <!-- ════════ SEÇÃO 7: CAP 5 — GESTÃO ════════ -->
+  <section class="section">
+    <div class="section-label">Capítulo 5</div>
+    <h2 class="section-title">Gerenciamento Indestrutível</h2>
+    <p class="section-text">Nenhuma estratégia técnica sobrevive sem uma gestão de banca sólida. As três diretrizes abaixo são inegociáveis.</p>
+
+    <div class="gestao-list">
+      <div class="neon-card gestao-item">
+        <div class="gestao-num">1</div>
+        <div>
+          <h4>Defina Metas Claras — Stop Win &amp; Stop Loss</h4>
+          <p>Antes de iniciar qualquer sessão, defina os dois limites com frieza. Operar sem esses limites é operar sem bússola — emoção preenche o vácuo onde estratégia deveria estar.</p>
+        </div>
+      </div>
+      <div class="neon-card gestao-item">
+        <div class="gestao-num">2</div>
+        <div>
+          <h4>Divisão Estrita de Banca — 1% a 3% por Operação</h4>
+          <p>Cada operação deve representar no máximo 1% a 3% do total da sua banca disponível. Essa proporção mantém a longevidade operacional e absorve sequências negativas sem comprometer o capital principal.</p>
+        </div>
+      </div>
+      <div class="neon-card gestao-item">
+        <div class="gestao-num">3</div>
+        <div>
+          <h4>Mantenha a Consciência — Ganância Quebra Bancas</h4>
+          <p>O maior inimigo do operador não está no gráfico — está na própria mente. Disciplina mental não é opcional: é o diferencial definitivo entre consistência e catástrofe.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="neon-card quote-frase">
+      <div class="quote-text">LUCRO BOM É LUCRO NO BOLSO!</div>
+    </div>
+  </section>
+
+  <!-- ════════ FOOTER ════════ -->
+  <footer>
+    <div class="footer-sig">Material Exclusivo — Venda Proibida — <strong>Carol Neto</strong></div>
+    <div class="footer-sub">© Todos os direitos reservados · A Rainha do Surf no Double VIP</div>
+
+    <div class="cta-group">
+      <a href="https://instagram.com/carolnetoreal" target="_blank" rel="noopener" class="cta-btn cta-insta">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+        @carolnetoreal
+      </a>
+      <a href="https://mais.red/run/OndeeuJogo" target="_blank" rel="noopener" class="cta-btn cta-betou">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2L2 7l10 5 10-5-10-5"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        Operar na Plataforma Oficial da Rainha
+      </a>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;opacity:0.28;">
+      <div style="width:40px;height:1px;background:var(--gold);"></div>
+      <div style="width:5px;height:5px;background:var(--gold);transform:rotate(45deg);"></div>
+      <div style="width:40px;height:1px;background:var(--gold);"></div>
+    </div>
+  </footer>
+
+</div><!-- /page-wrapper -->
+
+<script>
+/* ══════════════════════════════════════════
+   CASINO CHIP SVG GENERATOR
+   Draws realistic poker chips as inline SVG
+   with random colors matching the theme
+══════════════════════════════════════════ */
+function makeChipSVG(size, color1, color2) {
+  const r = size / 2;
+  const innerR = r * 0.72;
+  const notchLen = r * 0.22;
+  const notchW   = r * 0.12;
+  // 4 notches at 0/90/180/270 deg
+  const notches = [0, 90, 180, 270].map(deg => {
+    const rad = deg * Math.PI / 180;
+    const nx = r + Math.cos(rad) * (r - notchLen * 0.5);
+    const ny = r + Math.sin(rad) * (r - notchLen * 0.5);
+    return `<rect x="${nx - notchW/2}" y="${ny - notchW/2}"
+              width="${notchW}" height="${notchLen}"
+              rx="${notchW*0.3}"
+              transform="rotate(${deg},${nx},${ny})"
+              fill="${color2}" opacity="0.9"/>`;
+  }).join('');
+
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
+    <!-- outer rim -->
+    <circle cx="${r}" cy="${r}" r="${r}" fill="${color1}" opacity="0.95"/>
+    <!-- stripe ring -->
+    <circle cx="${r}" cy="${r}" r="${r}" fill="none" stroke="${color2}" stroke-width="${r*0.18}" opacity="0.85"/>
+    <!-- inner field -->
+    <circle cx="${r}" cy="${r}" r="${innerR}" fill="${color1}" opacity="0.9"/>
+    <!-- inner ring -->
+    <circle cx="${r}" cy="${r}" r="${innerR}" fill="none" stroke="${color2}" stroke-width="${r*0.06}" opacity="0.6"/>
+    <!-- notches -->
+    ${notches}
+    <!-- center dot -->
+    <circle cx="${r}" cy="${r}" r="${r*0.12}" fill="${color2}" opacity="0.8"/>
+  </svg>`;
+}
+
+const chipThemes = [
+  ['#2A006A','#D4AF37'],  // deep purple + gold
+  ['#0D0030','#C77DFF'],  // black-purple + light purple
+  ['#1A0000','#E53935'],  // dark red + red
+  ['#000A20','#7B7BEE'],  // navy + blue-purple
+  ['#1A0035','#FF10F0'],  // dark + pink neon
+  ['#050014','#D4AF37'],  // near black + gold
+];
+
+const bgCanvas = document.getElementById('bgCanvas');
+const chipCount = 20;
+
+for (let i = 0; i < chipCount; i++) {
+  const el = document.createElement('div');
+  el.className = 'chip-el';
+
+  const theme = chipThemes[Math.floor(Math.random() * chipThemes.length)];
+  const size  = 36 + Math.random() * 48;   // 36–84 px
+  const svg   = makeChipSVG(size, theme[0], theme[1]);
+
+  el.innerHTML = svg;
+  el.style.cssText = `
+    left: ${Math.random() * 100}%;
+    animation-duration: ${20 + Math.random() * 28}s;
+    animation-delay: -${Math.random() * 25}s;
+  `;
+  bgCanvas.appendChild(el);
+}
+
+/* ══════════════════════════════════════════
+   BIDIRECTIONAL NEON OBSERVER
+   Cards glow ON when >= 18% visible,
+   go dark when they leave the viewport.
+══════════════════════════════════════════ */
+const neonCards = document.querySelectorAll('.neon-card');
+
+const neonObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('neon-card--active');
+    } else {
+      entry.target.classList.remove('neon-card--active');
+    }
+  });
+}, { threshold: 0.18 });
+
+neonCards.forEach(card => neonObserver.observe(card));
+</script>
+</body>
+</html>
